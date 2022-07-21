@@ -1,45 +1,24 @@
-import {
-  LaptopOutlined,
-  NotificationOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
-import { Input, MenuProps } from "antd";
-import { Breadcrumb, Layout, Menu } from "antd";
 import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import PrivateRoute from "./features/PrivateRoute";
+import Home from "./pages/Home";
+import Share from "./pages/Share";
 
-const { Header, Content, Footer, Sider } = Layout;
-
-const items1: MenuProps["items"] = [
-  {
-    key: 1,
-    label: `Login`,
-  },
-  {
-    key: 2,
-    label: `Sign up`,
-  },
-];
+import AuthLayout from "./layout/AuthLayout";
 
 const App: React.FC = () => (
-  <Layout>
-    <Header className="header">
-      <div className="logo" />
-      <Menu className="" theme="dark" mode="horizontal" items={items1} />
-    </Header>
-    <Content style={{ padding: "0 50px" }}>
-      <Breadcrumb style={{ margin: "16px 0" }}>
-        <Breadcrumb.Item>Home</Breadcrumb.Item>
-        <Breadcrumb.Item>List</Breadcrumb.Item>
-        <Breadcrumb.Item>App</Breadcrumb.Item>
-      </Breadcrumb>
-      <Layout className="site-layout-background" style={{ padding: "24px 0" }}>
-        <Content style={{ padding: "0 24px", minHeight: 280 }}>Content</Content>
-      </Layout>
-    </Content>
-    <Footer style={{ textAlign: "center" }}>
-      Ant Design ©2018 Created by Ant UED
-    </Footer>
-  </Layout>
+  <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Home />}>
+        <Route index element={<Home />} />
+      </Route>
+      <Route path="/" element={<PrivateRoute />}>
+        <Route path="/" element={<AuthLayout />}>
+          <Route path="share" element={<Share />}></Route>
+        </Route>
+      </Route>
+    </Routes>
+  </BrowserRouter>
 );
 
 export default App;
