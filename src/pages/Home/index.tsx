@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Login from "../../features/Login";
 import Signup from "../../features/Signup";
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Header, Content, Footer } = Layout;
 
 const Home: React.FC = () => {
   const [isShowLogin, setIsShowLogin] = useState(false);

@@ -2,7 +2,7 @@ import { Breadcrumb, Layout, Menu, MenuProps } from "antd";
 import React from "react";
 import { Outlet } from "react-router";
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Header, Content, Footer } = Layout;
 
 const items1: MenuProps["items"] = [
   {
