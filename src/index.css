@@ -17,3 +17,10 @@ code {
   display: flex;
   justify-content: space-between;
 }
+
+.white {
+  color: white;
+}
+.d-flex {
+  display: flex;
+}
