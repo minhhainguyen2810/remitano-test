@@ -1,4 +1,4 @@
-import { Breadcrumb, Layout, Menu, MenuProps, Typography } from "antd";
+import { Layout, Menu, MenuProps, Typography } from "antd";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Login from "../../features/Login";
@@ -15,7 +15,7 @@ import {
 
 const { Title } = Typography;
 
-const { Header, Content, Footer } = Layout;
+const { Header, Content } = Layout;
 
 const Home: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
