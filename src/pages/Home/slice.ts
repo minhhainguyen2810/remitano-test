@@ -6,10 +6,10 @@ export interface CounterState {
   showSignup: boolean;
   loadingLogin: boolean;
   loadingSignup: boolean;
-  showShareVideo: boolean,
-  loadingShareVideo: boolean,
+  showShareVideo: boolean;
+  loadingShareVideo: boolean;
+  sharedVideos?: any[];
   user?: string;
-};
 }
 
 const initialState: CounterState = {
@@ -37,6 +37,22 @@ export const register = createAsyncThunk(
   }
 );
 
+export const shareVideo = createAsyncThunk(
+  "home/shareVideo",
+  async (params: any) => {
+    const response = await apiClient.post(`/youtubeShare`, params);
+    return response;
+  }
+);
+
+export const getSharedVideos = createAsyncThunk(
+  "home/getSharedVideos",
+  async () => {
+    const response = await apiClient.get(`/youtubeShare`);
+    return response;
+  }
+);
+
 export const homeSlice = createSlice({
   name: "home",
   initialState,
@@ -48,10 +64,11 @@ export const homeSlice = createSlice({
       state.showSignup = !state.showSignup;
     },
     showShareVideo: (state) => {
-      state.showSignup = !state.showSignup;
+      state.showShareVideo = !state.showShareVideo;
     },
   },
   extraReducers: (builder) => {
+    // authenticate
     builder.addCase(authenticate.pending, (state, action) => {
       state.loadingLogin = true;
     });
@@ -63,6 +80,7 @@ export const homeSlice = createSlice({
     builder.addCase(authenticate.rejected, (state, action) => {
       state.loadingLogin = false;
     });
+    // signup
     builder.addCase(register.pending, (state, action) => {
       state.loadingSignup = true;
     });
@@ -74,9 +92,31 @@ export const homeSlice = createSlice({
     builder.addCase(register.rejected, (state, action) => {
       state.loadingSignup = false;
     });
+    // shareVideo
+    builder.addCase(shareVideo.pending, (state, action) => {
+      state.loadingShareVideo = true;
+    });
+    builder.addCase(shareVideo.fulfilled, (state, action) => {
+      state.loadingShareVideo = false;
+      state.showShareVideo = false;
+    });
+    builder.addCase(shareVideo.rejected, (state, action) => {
+      state.loadingShareVideo = false;
+    });
+    // getSharedVideos
+    builder.addCase(getSharedVideos.pending, (state, action) => {
+      state.loadingShareVideo = true;
+    });
+    builder.addCase(getSharedVideos.fulfilled, (state, action) => {
+      state.loadingShareVideo = false;
+      state.sharedVideos = action.payload.data;
+    });
+    builder.addCase(getSharedVideos.rejected, (state, action) => {
+      state.loadingShareVideo = false;
+    });
   },
 });
 
-export const { showLogin, showSignup } = homeSlice.actions;
+export const { showLogin, showSignup, showShareVideo } = homeSlice.actions;
 
 export default homeSlice.reducer;

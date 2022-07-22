@@ -1,10 +1,19 @@
-import { Breadcrumb, Layout, Menu, MenuProps, Modal, Typography } from "antd";
-import React, { useEffect, useState } from "react";
+import { Breadcrumb, Layout, Menu, MenuProps, Typography } from "antd";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Login from "../../features/Login";
 import Signup from "../../features/Signup";
 import { AppDispatch, RootState } from "../../store";
-import { authenticate, showLogin, showSignup } from "./slice";
+import Share from "../Share";
+import {
+  authenticate,
+  getSharedVideos,
+  showLogin,
+  showShareVideo,
+  showSignup,
+} from "./slice";
+
+const { Title } = Typography;
 
 const { Header, Content, Footer } = Layout;
 
@@ -12,7 +21,11 @@ const Home: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
   const showModalLogin = () => dispatch(showLogin());
   const showModalSignup = () => dispatch(showSignup());
+  const showModalShareVideo = () => dispatch(showShareVideo());
   const user = useSelector((state: RootState) => state.counter.user);
+  const sharedVideos = useSelector(
+    (state: RootState) => state.counter.sharedVideos
+  );
 
   const guessItems: MenuProps["items"] = [
     {
@@ -31,7 +44,7 @@ const Home: React.FC = () => {
     {
       key: 1,
       label: `Share a movie`,
-      onClick: showModalLogin,
+      onClick: showModalShareVideo,
     },
   ];
 
@@ -39,11 +52,15 @@ const Home: React.FC = () => {
     dispatch(authenticate(null));
   }, [dispatch]);
 
+  useEffect(() => {
+    dispatch(getSharedVideos());
+  }, [dispatch]);
+
   return (
     <Layout>
       <Header className="header">
         <div className="logo" />
-        {!user ? (
+        {user ? (
           <div className="d-flex">
             <Typography className="white">Welcome, {user}</Typography>
             <Menu
@@ -63,25 +80,35 @@ const Home: React.FC = () => {
         )}
       </Header>
       <Content style={{ padding: "0 50px" }}>
-        <Breadcrumb style={{ margin: "16px 0" }}>
-          <Breadcrumb.Item>Home</Breadcrumb.Item>
-          <Breadcrumb.Item>List</Breadcrumb.Item>
-          <Breadcrumb.Item>App</Breadcrumb.Item>
-        </Breadcrumb>
         <Layout
           className="site-layout-background"
           style={{ padding: "24px 0" }}
         >
           <Content style={{ padding: "0 24px", minHeight: 280 }}>
-            Content
+            <div>
+              {sharedVideos?.map((sharedVideo) => (
+                <div className="mb-16">
+                  <Title level={5}>Shared by: {sharedVideo.sharedBy}</Title>
+                  <div className="d-flex justify-content-center">
+                    <iframe
+                      width="640"
+                      height="360"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      src={`https://www.youtube.com/embed/${
+                        sharedVideo.url?.split("v=")?.[1]
+                      }`}
+                    ></iframe>
+                  </div>
+                </div>
+              ))}
+            </div>
           </Content>
         </Layout>
       </Content>
-      <Footer style={{ textAlign: "center" }}>
-        Ant Design ©2018 Created by Ant UED
-      </Footer>
       <Login />
       <Signup />
+      <Share />
     </Layout>
   );
 };
