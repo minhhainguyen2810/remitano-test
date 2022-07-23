@@ -66,6 +66,7 @@ export const homeSlice = createSlice({
     showShareVideo: (state) => {
       state.showShareVideo = !state.showShareVideo;
     },
+    resetStore: () => initialState,
   },
   extraReducers: (builder) => {
     // authenticate
@@ -76,6 +77,7 @@ export const homeSlice = createSlice({
       state.loadingLogin = false;
       state.showLogin = false;
       state.user = action.payload.data.username;
+      console.log(action.payload.data.username);
     });
     builder.addCase(authenticate.rejected, (state, action) => {
       state.loadingLogin = false;
@@ -110,6 +112,7 @@ export const homeSlice = createSlice({
     builder.addCase(getSharedVideos.fulfilled, (state, action) => {
       state.loadingShareVideo = false;
       state.sharedVideos = action.payload.data;
+      console.log(action.payload.data);
     });
     builder.addCase(getSharedVideos.rejected, (state, action) => {
       state.loadingShareVideo = false;
@@ -117,6 +120,7 @@ export const homeSlice = createSlice({
   },
 });
 
-export const { showLogin, showSignup, showShareVideo } = homeSlice.actions;
+export const { showLogin, showSignup, showShareVideo, resetStore } =
+  homeSlice.actions;
 
 export default homeSlice.reducer;

@@ -25,7 +25,7 @@ const Signup = () => {
 
   return (
     <Modal
-      title="Signup"
+      title="Sign up"
       visible={isShowSignup}
       onCancel={showModalSignup}
       footer={null}
@@ -45,7 +45,7 @@ const Signup = () => {
           name="username"
           rules={[{ required: true, message: "Please input your username!" }]}
         >
-          <Input />
+          <Input data-testid="signup" />
         </Form.Item>
 
         <Form.Item
@@ -53,7 +53,7 @@ const Signup = () => {
           name="password"
           rules={[{ required: true, message: "Please input your password!" }]}
         >
-          <Input.Password />
+          <Input.Password data-testid="signup-pwd" />
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>

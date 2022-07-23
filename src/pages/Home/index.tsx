@@ -11,6 +11,7 @@ import {
   showLogin,
   showShareVideo,
   showSignup,
+  resetStore,
 } from "./slice";
 
 const { Title } = Typography;
@@ -26,8 +27,9 @@ const Home: React.FC = () => {
   const sharedVideos = useSelector(
     (state: RootState) => state.counter.sharedVideos
   );
+  console.log(sharedVideos);
 
-  const guessItems: MenuProps["items"] = [
+  const guestItems: MenuProps["items"] = [
     {
       key: 1,
       label: `Login`,
@@ -56,6 +58,12 @@ const Home: React.FC = () => {
     dispatch(getSharedVideos());
   }, [dispatch]);
 
+  useEffect(() => {
+    return function cleanup() {
+      dispatch(resetStore());
+    };
+  }, []);
+
   return (
     <Layout>
       <Header className="header">
@@ -75,7 +83,7 @@ const Home: React.FC = () => {
             className=""
             theme="dark"
             mode="horizontal"
-            items={guessItems}
+            items={guestItems}
           />
         )}
       </Header>
@@ -84,11 +92,13 @@ const Home: React.FC = () => {
           className="site-layout-background"
           style={{ padding: "24px 0" }}
         >
-          <Content style={{ padding: "0 24px", minHeight: 280 }}>
+          <Content style={{ padding: "0 24px", minHeight: "100vh" }}>
             <div>
               {sharedVideos?.map((sharedVideo) => (
-                <div className="mb-16">
-                  <Title level={5}>Shared by: {sharedVideo.sharedBy}</Title>
+                <div className="mb-24" key={sharedVideo._id}>
+                  <Title level={5} className="text-center">
+                    Shared by: {sharedVideo.sharedBy}
+                  </Title>
                   <div className="d-flex justify-content-center">
                     <iframe
                       width="640"

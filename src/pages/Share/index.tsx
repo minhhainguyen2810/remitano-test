@@ -51,7 +51,7 @@ const Share = () => {
             { required: true, message: "Please input your Youtube Url!" },
           ]}
         >
-          <Input />
+          <Input placeholder="https://www.youtube.com/watch?v=4KVIFNJ7mDQ" />
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit">
